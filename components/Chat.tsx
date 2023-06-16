@@ -5,13 +5,49 @@ import { ChatLine, LoadingChatLine, type ChatGPTMessage } from './ChatLine'
 
 const COOKIE_NAME = 'nextjs-example-ai-chat-gpt3'
 
+
+export type BeliefType = 'christian' | 'islam' | 'mormon' | 'hinduism' | 'confucianism' | 'all_beliefs'
+
+
 // default first message to display in UI (not necessary to define the prompt)
-export const initialMessages: ChatGPTMessage[] = [
-  {
-    role: 'assistant',
-    content: "Hi! I'm a AI Bible Scholar. I'm able to answer any questions you have that might be answered in the Bible. Feel free to describe a current situation you're in, reference a Bible verse, or ask me a question.",
-  },
-]
+export const initialMessages: Record<BeliefType, ChatGPTMessage[]> = {
+  christian: [
+    {
+      role: 'assistant',
+      content: "Hi! I'm a AI Bible Scholar. I'm able to answer any questions you have that might be answered in the Bible. Feel free to describe a current situation you're in, reference a Bible verse, or ask me a question.",
+    },
+  ],
+  islam: [
+    {
+      role: 'assistant',
+      content: "Hi! I'm a AI Quran Scholar. I'm able to answer any questions you have that might be answered in the Quran. Feel free to describe a current situation you're in, reference a Quran verse, or ask me a question.",
+    },
+  ],
+  mormon: [
+    {
+      role: 'assistant',
+      content: "Hi! I'm a AI Book of Mormon Scholar. I'm able to answer any questions you have that might be answered in the Book of Mormon. Feel free to describe a current situation you're in, reference a Book of Mormon verse, or ask me a question.",
+    },
+  ],
+  hinduism: [
+    {
+      role: 'assistant',
+      content: "Hi! I'm a AI Bhagavad Gita Scholar. I'm able to answer any questions you have that might be answered in the Bhagavad Gita. Feel free to describe a current situation you're in, reference a Bhagavad Gita verse, or ask me a question.",
+    },
+  ],
+  confucianism: [
+    {
+      role: 'assistant',
+      content: "Hi! I'm a AI Confucianism Scholar. I'm able to answer any questions you have that might be answered in the Analects (more books coming soon). Feel free to describe a current situation you're in, reference a Analects verse, or ask me a question.",
+    },
+  ],
+  all_beliefs: [
+    {
+      role: 'assistant',
+      content: "Hi! I'm a AI Religion Scholar. I'm able to answer any questions you have that might be answered across all major religious books, mainly the Bible, Quran, Book of Mormon, Bhagavad Gita, and Analects. Feel free to describe a current situation you're in, reference a verse, or ask me a question.",
+    }
+  ]
+}
 
 const InputMessage = ({ input, setInput, sendMessage }: any) => (
   <div className="mt-6 flex clear-both">
@@ -44,8 +80,11 @@ const InputMessage = ({ input, setInput, sendMessage }: any) => (
   </div>
 )
 
-export function Chat() {
-  const [messages, setMessages] = useState<ChatGPTMessage[]>(initialMessages)
+
+
+
+export function Chat({ beliefType }: { beliefType: BeliefType }) {
+  const [messages, setMessages] = useState<ChatGPTMessage[]>(initialMessages[beliefType])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [cookie, setCookie] = useCookies([COOKIE_NAME])
@@ -83,6 +122,7 @@ export function Chat() {
       body: JSON.stringify({
         messages: newMessages,
         user: cookie[COOKIE_NAME],
+        belief: beliefType,
       }),
     })
 
@@ -92,44 +132,21 @@ export function Chat() {
       throw new Error(response.statusText)
     }
 
-    // This data is a stringified JSON object
     const data: any = await response.json()
     if (!data) {
       throw new Error('No data received.')
     }
 
-    console.log(data)
-    // const lastMessage = data.message
-
     setMessages([
       ...data,
-      // { role: 'assistant', content: lastMessage } as ChatGPTMessage,
     ])
 
     setLoading(false)
-
-    // const reader = data.getReader()
-    // const decoder = new TextDecoder()
-    // let done = false
-
-    // let lastMessage = ''
-
-    // while (!done) {
-    //   const { value, done: doneReading } = await reader.read()
-    //   done = doneReading
-    //   const chunkValue = decoder.decode(value)
-
-    //   lastMessage = lastMessage + chunkValue
-
-    //   setMessages([
-    //     ...newMessages,
-    //     { role: 'assistant', content: lastMessage } as ChatGPTMessage,
-    //   ])
-
-    //   setLoading(false)
-    // }
   }
 
+  if (!messages) {
+    return <div>loading...</div>
+  }
   return (
     <div className="rounded-2xl border-zinc-100  lg:border lg:p-6">
       {messages.map(({ content, role }, index) => (

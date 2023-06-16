@@ -5,7 +5,7 @@ function Home() {
   return (
     <div className="flex flex-col-reverse items-center overflow-auto">
       <div className="w-full max-w-[700px]">
-        <Chat beliefType='all_beliefs' />
+        <Chat beliefType='hinduism' />
       </div>
     </div>
   )
