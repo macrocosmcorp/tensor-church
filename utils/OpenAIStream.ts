@@ -14,15 +14,17 @@ export interface ChatGPTMessage {
 export interface OpenAIStreamPayload {
   model: string
   messages: ChatGPTMessage[]
-  temperature: number
-  top_p: number
-  frequency_penalty: number
-  presence_penalty: number
-  max_tokens: number
+  temperature?: number
+  top_p?: number
+  frequency_penalty?: number
+  presence_penalty?: number
+  max_tokens?: number
   stream: boolean
   stop?: string[]
   user?: string
-  n: number
+  n?: number
+  functions?: any[]
+  function_call?: string
 }
 
 export async function OpenAIStream(payload: OpenAIStreamPayload) {
@@ -46,6 +48,17 @@ export async function OpenAIStream(payload: OpenAIStreamPayload) {
     body: JSON.stringify(payload),
   })
 
+  // get status code
+  console.log('res.status', res.status)
+  if (res.status !== 200) {
+    console.log('res.statusText', res.statusText)
+    throw new Error('OpenAI API Error')
+  }
+  
+  let result = await res.json()
+  console.log('result', result)
+  return result?.choices[0]
+
   const stream = new ReadableStream({
     async start(controller) {
       // callback
@@ -60,7 +73,8 @@ export async function OpenAIStream(payload: OpenAIStreamPayload) {
           }
           try {
             const json = JSON.parse(data)
-            const text = json.choices[0].delta?.content || ''
+            console.log('json', json.choices[0])
+            const text = json.choices[0].delta?.content || json.choices[0].delta?.function_call?.arguments || ''
             if (counter < 2 && (text.match(/\n/) || []).length) {
               // this is a prefix character (i.e., "\n\n"), do nothing
               return
@@ -86,3 +100,37 @@ export async function OpenAIStream(payload: OpenAIStreamPayload) {
 
   return stream
 }
+
+
+// const payload: OpenAIStreamPayload = {
+//   model: 'gpt-3.5-turbo-0613',
+//   messages: messages,
+//   temperature: process.env.AI_TEMP ? parseFloat(process.env.AI_TEMP) : 0.7,
+//   max_tokens: process.env.AI_MAX_TOKENS
+//     ? parseInt(process.env.AI_MAX_TOKENS)
+//     : 100,
+//   top_p: 1,
+//   frequency_penalty: 0,
+//   presence_penalty: 0,
+//   stream: false,
+//   user: body?.user,
+//   n: 1,
+//   functions: [
+//     {
+//         "name": "get_current_weather",
+//         "description": "Get the current weather in a given location",
+//         "parameters": {
+//             "type": "object",
+//             "properties": {
+//                 "location": {
+//                     "type": "string",
+//                     "description": "The city and state, e.g. San Francisco, CA",
+//                 },
+//                 "unit": {"type": "string", "enum": ["celsius", "fahrenheit"]},
+//             },
+//             "required": ["location"],
+//         },
+//     }
+// ],
+//   function_call: "get_current_weather",
+// }

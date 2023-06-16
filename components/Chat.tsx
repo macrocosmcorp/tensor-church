@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
-import { Button } from './Button'
-import { type ChatGPTMessage, ChatLine, LoadingChatLine } from './ChatLine'
+import { useEffect, useRef, useState } from 'react'
 import { useCookies } from 'react-cookie'
+import { Button } from './Button'
+import { ChatLine, LoadingChatLine, type ChatGPTMessage } from './ChatLine'
 
 const COOKIE_NAME = 'nextjs-example-ai-chat-gpt3'
 
@@ -9,7 +9,7 @@ const COOKIE_NAME = 'nextjs-example-ai-chat-gpt3'
 export const initialMessages: ChatGPTMessage[] = [
   {
     role: 'assistant',
-    content: 'Hi! I am a friendly AI assistant. Ask me anything!',
+    content: "Hi! I'm a AI Bible Scholar. I'm able to answer any questions you have that might be answered in the Bible. Feel free to describe a current situation you're in, reference a Bible verse, or ask me a question.",
   },
 ]
 
@@ -50,6 +50,13 @@ export function Chat() {
   const [loading, setLoading] = useState(false)
   const [cookie, setCookie] = useCookies([COOKIE_NAME])
 
+  const messagesEndRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+
   useEffect(() => {
     if (!cookie[COOKIE_NAME]) {
       // generate a semi random short id
@@ -66,7 +73,7 @@ export function Chat() {
       { role: 'user', content: message } as ChatGPTMessage,
     ]
     setMessages(newMessages)
-    const last10messages = newMessages.slice(-10) // remember last 10 messages
+    // const last10messages = newMessages.slice(-10) // remember last 10 messages
 
     const response = await fetch('/api/chat', {
       method: 'POST',
@@ -74,7 +81,7 @@ export function Chat() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        messages: last10messages,
+        messages: newMessages,
         user: cookie[COOKIE_NAME],
       }),
     })
@@ -85,32 +92,42 @@ export function Chat() {
       throw new Error(response.statusText)
     }
 
-    // This data is a ReadableStream
-    const data = response.body
+    // This data is a stringified JSON object
+    const data: any = await response.json()
     if (!data) {
-      return
+      throw new Error('No data received.')
     }
 
-    const reader = data.getReader()
-    const decoder = new TextDecoder()
-    let done = false
+    console.log(data)
+    // const lastMessage = data.message
 
-    let lastMessage = ''
+    setMessages([
+      ...data,
+      // { role: 'assistant', content: lastMessage } as ChatGPTMessage,
+    ])
 
-    while (!done) {
-      const { value, done: doneReading } = await reader.read()
-      done = doneReading
-      const chunkValue = decoder.decode(value)
+    setLoading(false)
 
-      lastMessage = lastMessage + chunkValue
+    // const reader = data.getReader()
+    // const decoder = new TextDecoder()
+    // let done = false
 
-      setMessages([
-        ...newMessages,
-        { role: 'assistant', content: lastMessage } as ChatGPTMessage,
-      ])
+    // let lastMessage = ''
 
-      setLoading(false)
-    }
+    // while (!done) {
+    //   const { value, done: doneReading } = await reader.read()
+    //   done = doneReading
+    //   const chunkValue = decoder.decode(value)
+
+    //   lastMessage = lastMessage + chunkValue
+
+    //   setMessages([
+    //     ...newMessages,
+    //     { role: 'assistant', content: lastMessage } as ChatGPTMessage,
+    //   ])
+
+    //   setLoading(false)
+    // }
   }
 
   return (
@@ -131,6 +148,7 @@ export function Chat() {
         setInput={setInput}
         sendMessage={sendMessage}
       />
+      <div ref={messagesEndRef} />
     </div>
   )
 }
