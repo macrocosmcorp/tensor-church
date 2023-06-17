@@ -153,8 +153,6 @@ if (process.env.OPENAI_API_ORG) {
 const handler = async (req: Request): Promise<Response> => {
   const body = await req.json();
 
-  console.log('Received request: ', body);
-
   if (!body?.messages || !body?.belief) {
     return new Response("Missing body", { status: 400 });
   }
