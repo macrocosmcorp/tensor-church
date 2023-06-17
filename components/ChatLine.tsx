@@ -67,7 +67,7 @@ export function ChatLine({ role = 'assistant', content }: ChatGPTMessage) {
               <p
                 className={clsx(
                   'text ',
-                  role == 'assistant' ? 'font-semibold font- ' : 'text-gray-400'
+                  role == 'assistant' ? 'font-medium font- ' : 'text-gray-400'
                 )}
               >
                 {formatteMessage}

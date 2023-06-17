@@ -14,37 +14,37 @@ export const initialMessages: Record<BeliefType, ChatGPTMessage[]> = {
   christian: [
     {
       role: 'assistant',
-      content: "Hi! I'm a AI Bible Scholar. I'm able to answer any questions you have that might be answered in the Bible. Feel free to describe a current situation you're in, reference a Bible verse, or ask me a question.",
+      content: "Hi! I'm an AI Bible Scholar. I'm able to answer any questions you have that might be answered in the Bible. Feel free to describe a current situation you're in, reference a Bible verse, or ask me a question.",
     },
   ],
   islam: [
     {
       role: 'assistant',
-      content: "Hi! I'm a AI Quran Scholar. I'm able to answer any questions you have that might be answered in the Quran. Feel free to describe a current situation you're in, reference a Quran verse, or ask me a question.",
+      content: "Hi! I'm an AI Quran Scholar. I'm able to answer any questions you have that might be answered in the Quran. Feel free to describe a current situation you're in, reference a Quran verse, or ask me a question.",
     },
   ],
   mormon: [
     {
       role: 'assistant',
-      content: "Hi! I'm a AI Book of Mormon Scholar. I'm able to answer any questions you have that might be answered in the Book of Mormon. Feel free to describe a current situation you're in, reference a Book of Mormon verse, or ask me a question.",
+      content: "Hi! I'm an AI Book of Mormon Scholar. I'm able to answer any questions you have that might be answered in the Book of Mormon. Feel free to describe a current situation you're in, reference a Book of Mormon verse, or ask me a question.",
     },
   ],
   hinduism: [
     {
       role: 'assistant',
-      content: "Hi! I'm a AI Bhagavad Gita Scholar. I'm able to answer any questions you have that might be answered in the Bhagavad Gita. Feel free to describe a current situation you're in, reference a Bhagavad Gita verse, or ask me a question.",
+      content: "Hi! I'm an AI Bhagavad Gita Scholar. I'm able to answer any questions you have that might be answered in the Bhagavad Gita. Feel free to describe a current situation you're in, reference a Bhagavad Gita verse, or ask me a question.",
     },
   ],
   confucianism: [
     {
       role: 'assistant',
-      content: "Hi! I'm a AI Confucianism Scholar. I'm able to answer any questions you have that might be answered in the Analects (more books coming soon). Feel free to describe a current situation you're in, reference a Analects verse, or ask me a question.",
+      content: "Hi! I'm an AI Confucianism Scholar. I'm able to answer any questions you have that might be answered in the Analects (more books coming soon). Feel free to describe a current situation you're in, reference a Analects verse, or ask me a question.",
     },
   ],
   all_beliefs: [
     {
       role: 'assistant',
-      content: "Hi! I'm a AI Religion Scholar. I'm able to answer any questions you have that might be answered across all major religious books, mainly the Bible, Quran, Book of Mormon, Bhagavad Gita, and Analects. Feel free to describe a current situation you're in, reference a verse, or ask me a question.",
+      content: "Hi! I'm an AI Religion Scholar. I'm able to answer any questions you have that might be answered across all major religious books, mainly the Bible, Quran, Book of Mormon, Bhagavad Gita, and Analects. Feel free to describe a current situation you're in, reference a verse, or ask me a question.",
     }
   ]
 }
@@ -151,6 +151,8 @@ export function Chat({ beliefType }: { beliefType: BeliefType }) {
     <div className="rounded-2xl border-zinc-100  lg:border lg:p-6">
       <span className="mx-auto flex flex-grow text-gray-400 clear-both mb-5 -mt-1 text-sm">
         Disclaimer: This is a beta version of Scholar AI. The answers provided by the AI are not guaranteed to be accurate. Please consult a religious leader for any serious questions.
+        All languages are supported, but the AI is trained on English.
+        No personal information is stored, all chats are anonymous and deleted as soon as the chat is over.
       </span>
       {messages.map(({ content, role }, index) => (
         <ChatLine key={index} role={role} content={content} />
