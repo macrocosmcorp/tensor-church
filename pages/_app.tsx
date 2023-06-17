@@ -5,7 +5,7 @@ import '@vercel/examples-ui/globals.css'
 import Header from '../components/Header'
 
 function App({ Component, pageProps }: AppProps) {
-  return (
+  return (<>
     <div className="flex flex-col min-h-screen p-10">
       <div className="flex flex-col items-center overflow-auto">
         <Header />
@@ -13,6 +13,7 @@ function App({ Component, pageProps }: AppProps) {
       </div>
       <Analytics />
     </div>
+  </>
   )
 }
 
