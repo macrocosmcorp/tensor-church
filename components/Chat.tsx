@@ -149,6 +149,9 @@ export function Chat({ beliefType }: { beliefType: BeliefType }) {
   }
   return (
     <div className="rounded-2xl border-zinc-100  lg:border lg:p-6">
+      <span className="mx-auto flex flex-grow text-gray-400 clear-both mb-5 -mt-1 text-sm">
+        Disclaimer: This is a beta version of Scholar AI. The answers provided by the AI are not guaranteed to be accurate. Please consult a religious leader for any serious questions.
+      </span>
       {messages.map(({ content, role }, index) => (
         <ChatLine key={index} role={role} content={content} />
       ))}
