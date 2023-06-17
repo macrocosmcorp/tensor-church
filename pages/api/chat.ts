@@ -225,7 +225,7 @@ async function get_response(messages: ChatGPTMessage[], belief: BeliefType): Pro
   });
 
   if (res.status !== 200) {
-    console.log("error:", res.status, res.statusText);
+    console.log("openai error:", res.status, res.statusText);
     return null
   }
 

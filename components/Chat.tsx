@@ -149,6 +149,9 @@ export function Chat({ beliefType }: { beliefType: BeliefType }) {
   }
   return (
     <div className="rounded-2xl border-zinc-100  lg:border lg:p-6">
+      <span className="mx-auto flex flex-grow text-red-400 clear-both mb-3 -mt-1 text-sm">
+        We&apos;re currently experiencing high traffic. Please be patient as we fix the issue. Will be back up soon!
+      </span>
       <span className="mx-auto flex flex-grow text-gray-400 clear-both mb-5 -mt-1 text-sm">
         Disclaimer: This is a beta version of Scholar AI. The answers provided by the AI are not guaranteed to be accurate. Please consult a religious leader for any serious questions.
         All languages are supported, but the AI is trained on English.
