@@ -19,7 +19,7 @@ export const LoadingChatLine = () => (
       <div className="min-w-0 flex-1">
         <p className="font-large text-xxl text-gray-900">
           <a href="#" className="hover:underline">
-            Scholar AI
+            Ya Boi
           </a>
         </p>
         <div className="space-y-4 pt-4">
@@ -61,7 +61,7 @@ export function ChatLine({ role = 'assistant', content }: ChatGPTMessage) {
             <div className="flex-1 gap-4">
               <p className="font-large text-xxl text-gray-900">
                 <a href="#" className="hover:underline">
-                  {role == 'assistant' ? 'Scholar AI' : 'You'}
+                  {role == 'assistant' ? 'Ya boi' : 'You'}
                 </a>
               </p>
               <p

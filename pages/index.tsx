@@ -5,7 +5,7 @@ import { Chat } from '../components/Chat'
 function Home() {
   return (<>
     <Head>
-      <title>TENSOR CHURCH - AI Religion Chat</title>
+      <title>3blue1brown is so done for</title>
       <meta name="description" content="Chat and ask questions about religion, belief, or philosophy with AI. Powered by ChatGPT." />
       <meta property="og:title" content="TENSOR CHURCH - AI Religion Chat" />
       <meta property="og:description" content="Chat and ask questions about religion, belief, or philosophy with AI. Powered by ChatGPT." />
@@ -24,7 +24,7 @@ function Home() {
       <meta name="twitter:image" content="https://tensor.church/static/open_graph_1.png" />
     </Head>
     <div className="w-full max-w-[700px]">
-      <Chat beliefType='all_beliefs' />
+      <Chat />
     </div>
   </>
   )
